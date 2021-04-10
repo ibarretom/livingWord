@@ -39,9 +39,9 @@
       <div v-if='mostraTexto'>
         <h2>{{livroSelecionado}} {{capituloSelecionado}}:{{versiculoSelecionado}}</h2>
         <article>{{texto}}</article> 
-        <div>
-          <v-btn text>proximo</v-btn>
-          <v-btn text>anterior</v-btn>
+        <div class='d-flex justify-space-between'>
+          <v-btn text @click="passaVersiculo('anterior')">anterior</v-btn>
+          <v-btn text @click="passaVersiculo('proximo')">proximo</v-btn>
         </div>
       </div>
     </v-sheet >
@@ -102,6 +102,20 @@ export default {
           this.mostraTexto = true
         })
       }
+    },
+    passaVersiculo(param){
+      param === 'anterior'? this.versiculoSelecionado++ : this.versiculoSelecionado--
+      const {abrev, capituloSelecionado, versicles} = this
+
+      if(this.versiculoSelecionado > versicles.length){
+        return
+      }
+      axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
+        .then(resp => {
+
+          this.texto = resp.data.text
+          this.mostraTexto = true
+        }).catch(erro => {console.log(erro)})
     },
     /*Essa função gera a quantidade de capítulos e versiculos, pois na api só vem a quantidade*/
     geraCapVers(quant){
