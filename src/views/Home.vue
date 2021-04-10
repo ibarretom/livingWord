@@ -104,18 +104,19 @@ export default {
       }
     },
     passaVersiculo(param){
-      param === 'anterior'? this.versiculoSelecionado-- : this.versiculoSelecionado++
       const {abrev, capituloSelecionado, versicles} = this
 
-      if(this.versiculoSelecionado > versicles.length || this.versiculoSelecionado === 0){
-        return
-      }
-      axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
+      if(this.versiculoSelecionado < versicles.length || this.versiculoSelecionado !== 0){
+        param === 'anterior'? this.versiculoSelecionado-- : this.versiculoSelecionado++
+        axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
         .then(resp => {
 
           this.texto = resp.data.text
           this.mostraTexto = true
-        }).catch(erro => {console.log(erro)})
+        }).catch(erro => {console.log(erro)})  
+      }
+
+      
     },
     /*Essa função gera a quantidade de capítulos e versiculos, pois na api só vem a quantidade*/
     geraCapVers(quant){
