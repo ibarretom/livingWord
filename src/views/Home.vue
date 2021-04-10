@@ -106,14 +106,24 @@ export default {
     passaVersiculo(param){
       const {abrev, capituloSelecionado, versicles} = this
 
-      if(this.versiculoSelecionado < versicles.length || this.versiculoSelecionado !== 0){
+      if(this.versiculoSelecionado < versicles.length && this.versiculoSelecionado > 1){
         param === 'anterior'? this.versiculoSelecionado-- : this.versiculoSelecionado++
         axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
         .then(resp => {
 
           this.texto = resp.data.text
           this.mostraTexto = true
-        }).catch(erro => {console.log(erro)})  
+
+        })
+        .catch(erro => {console.log(erro)})  
+      }else if(this.versiculoSelecionado === 1){
+        param === 'anterior'? 1 : this.versiculoSelecionado++
+        axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
+        .then(resp => {
+          this.texto = resp.data.text
+          this.mostraTexto = true
+
+        })
       }
 
       
@@ -128,7 +138,9 @@ export default {
     }
   },
   mounted() {
-    //Qunado estiver no processo de montagem eu pego todos os livros da bíblia
+    //Quando estiver no processo de montagem eu pego todos os livros da bíblia
+    axios.post('https://www.abibliadigital.com.br/api/users')
+    .then()
     axios.get('https://www.abibliadigital.com.br/api/books').then(resp => {
       let arrayLivros = resp.data
       this.objetoLivro = arrayLivros
