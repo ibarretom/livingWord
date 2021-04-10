@@ -116,8 +116,9 @@ export default {
 
         })
         .catch(erro => {console.log(erro)})  
-      }else if(this.versiculoSelecionado === 1){
+      }else if(this.versiculoSelecionado == 1 || this.versiculoSelecionado < versicles.length){
         param === 'anterior'? 1 : this.versiculoSelecionado++
+        console.log('é 1')
         axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
         .then(resp => {
           this.texto = resp.data.text
@@ -126,7 +127,6 @@ export default {
         })
       }
 
-      
     },
     /*Essa função gera a quantidade de capítulos e versiculos, pois na api só vem a quantidade*/
     geraCapVers(quant){
@@ -139,8 +139,6 @@ export default {
   },
   mounted() {
     //Quando estiver no processo de montagem eu pego todos os livros da bíblia
-    axios.post('https://www.abibliadigital.com.br/api/users')
-    .then()
     axios.get('https://www.abibliadigital.com.br/api/books').then(resp => {
       let arrayLivros = resp.data
       this.objetoLivro = arrayLivros
