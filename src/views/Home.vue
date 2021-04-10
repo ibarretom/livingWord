@@ -104,10 +104,10 @@ export default {
       }
     },
     passaVersiculo(param){
-      param === 'anterior'? this.versiculoSelecionado++ : this.versiculoSelecionado--
+      param === 'anterior'? this.versiculoSelecionado-- : this.versiculoSelecionado++
       const {abrev, capituloSelecionado, versicles} = this
 
-      if(this.versiculoSelecionado > versicles.length){
+      if(this.versiculoSelecionado > versicles.length || this.versiculoSelecionado === 0){
         return
       }
       axios.get(`https://www.abibliadigital.com.br/api/verses/nvi/${abrev}/${capituloSelecionado}/${this.versiculoSelecionado}`)
